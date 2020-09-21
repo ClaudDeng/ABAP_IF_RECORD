@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_EXT_IF_REC_EXE</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>external system interface execute record</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_EXT_IF_REC_EXE</CLSNAME>
+     <CMPNAME>CONSTRUCTOR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>构造函数</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_EXT_IF_REC_EXE</CLSNAME>
+     <CMPNAME>C_STATUS_00</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>00-未执行</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_EXT_IF_REC_EXE</CLSNAME>
+     <CMPNAME>C_STATUS_01</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>01-已正确处理完成</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_EXT_IF_REC_EXE</CLSNAME>
+     <CMPNAME>C_STATUS_02</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>02-错误处理完成，无法再次执行</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_EXT_IF_REC_EXE</CLSNAME>
+     <CMPNAME>C_STATUS_10</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>10-错误处理完成，可再次处理</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_EXT_IF_REC_EXE</CLSNAME>
+     <CMPNAME>C_STATUS_20</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>20-正在处理</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_EXT_IF_REC_EXE</CLSNAME>
+     <CMPNAME>V_EXTERNAL_NOTE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>external system note</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_EXT_IF_REC_EXE</CLSNAME>
+     <CMPNAME>V_EXT_SYS_ID</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>external system id</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_EXT_IF_REC_EXE</CLSNAME>
+     <CMPNAME>V_FNAME</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>function name</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_EXT_IF_REC_EXE</CLSNAME>
+     <CMPNAME>V_MEMORY_ID</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>内存ID</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>
