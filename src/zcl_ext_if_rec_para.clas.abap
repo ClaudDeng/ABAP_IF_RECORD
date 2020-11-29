@@ -19,40 +19,81 @@ class zcl_ext_if_rec_para definition
       ty_t_param  type table of ty_param .
 
     data v_in_param_json type string .
-    data v_in_param_json_node type ref to zcl_mdp_json_node.
+    data o_in_param_json_node type ref to zcl_mdp_json_node.
     data v_out_param_json type string .
-    data v_fm_name type rs38l_fnam .
-    data v_fg_name type rs38l_fnam .
+    data o_out_param_json_node type ref to zcl_mdp_json_node.
     data t_params type ty_t_param .
-
+    data s_param_h type ztba_if_param_h.
+    data t_param_i type table of ztba_if_param_i.
+    data v_begin type i.
+    data v_end type i.
     methods constructor
       importing
         !iv_fm_name type rs38l_fnam .
 
-    methods convert_to_json.
-
+    methods convert_in_param_to_json.
+    methods convert_out_param_to_json.
+    methods save_param.
   protected section.
   private section.
-    methods get_function_param
-      importing
-        !iv_fname type rs38l_fnam .
-endclass.
+    methods get_function_param.
+    methods convert_to_json.
+ENDCLASS.
 
 
 
-class zcl_ext_if_rec_para implementation.
+CLASS ZCL_EXT_IF_REC_PARA IMPLEMENTATION.
 
 
   method constructor.
 
-    v_fm_name = iv_fm_name.
-    select single pname
-        into v_fg_name
-        from tfdir
-        where funcname =  v_fm_name
-       .
-    me->get_function_param( iv_fname = v_fm_name ).
 
+    try.
+        s_param_h-uuid  = cl_system_uuid=>create_uuid_c26_static( ).
+        s_param_h-fname = iv_fm_name.
+        select single pname
+            into s_param_h-fg_name
+            from tfdir
+            where funcname =  iv_fm_name  .
+        s_param_h-uname  = sy-uname.
+        s_param_h-b_datum = sy-datum.
+        s_param_h-b_uzeit = sy-uzeit.
+        get run time field v_begin.
+      catch cx_uuid_error into data(lcl_cx).
+    endtry.
+
+    me->get_function_param(  ).
+
+  endmethod.
+
+
+  method convert_in_param_to_json.
+
+
+    me->convert_to_json( ).
+
+    o_in_param_json_node = zcl_mdp_json_node=>create_object_node( ).
+    loop at t_params assigning field-symbol(<fs_param>) .
+      o_in_param_json_node->object_add_child_node(
+          child_key   = conv string(  <fs_param>-param_name )
+          child_node  = <fs_param>-val_json
+      ).
+    endloop.
+    v_in_param_json = o_in_param_json_node->serialize( ).
+
+  endmethod.
+
+
+  method convert_out_param_to_json.
+    me->convert_to_json( ).
+    o_out_param_json_node = zcl_mdp_json_node=>create_object_node( ).
+    loop at t_params assigning field-symbol(<fs_param>) .
+      o_out_param_json_node->object_add_child_node(
+          child_key   = conv string(  <fs_param>-param_name )
+          child_node  = <fs_param>-val_json
+      ).
+    endloop.
+    v_out_param_json = o_out_param_json_node->serialize( ).
   endmethod.
 
 
@@ -68,6 +109,7 @@ class zcl_ext_if_rec_para implementation.
       unassign <fs_value>.
       unassign <fs_fld>.
       unassign <fs_struct>.
+      clear <fs_param>-val_json.
       lo_type = cl_abap_datadescr=>describe_by_data_ref( <fs_param>-val_data ).
       case lo_type->kind.
         when 'E'. "element
@@ -123,24 +165,11 @@ class zcl_ext_if_rec_para implementation.
                      child_key   = conv string( <fs_comp>-name )
                    child_node  = lcl_ele_node      ).
             endloop.
-
             <fs_param>-val_json->array_add_child_node( child_node = lcl_object_node  ).
           endloop.
         when others.
       endcase.
-
     endloop.
-
-
-    v_in_param_json_node = zcl_mdp_json_node=>create_object_node( ).
-    loop at t_params assigning <fs_param> .
-      v_in_param_json_node->object_add_child_node(
-          child_key   = conv string(  <fs_param>-param_name )
-          child_node  = <fs_param>-val_json
-      ).
-
-    endloop.
-    v_in_param_json = v_in_param_json_node->serialize( ).
 
   endmethod.
 
@@ -152,7 +181,7 @@ class zcl_ext_if_rec_para implementation.
 
     call function 'RFC_GET_FUNCTION_INTERFACE'
       exporting
-        funcname      = v_fm_name
+        funcname      = s_param_h-fname
         language      = sy-langu
 *       NONE_UNICODE_LENGTH           = ' '
 *       IMPORTING
@@ -190,26 +219,26 @@ class zcl_ext_if_rec_para implementation.
       endif.
     endloop.
 
-*    data: ls_params type ty_param.
-*    loop at lt_params assigning field-symbol(<fs_param>).
-*
-*      ls_params-param_class = <fs_param>-paramclass .
-*      ls_params-param_name = <fs_param>-parameter .
-*      ls_params-param_txt = <fs_param>-paramtext .
-*      ls_params-ref_object =   switch #( <fs_param>-fieldname
-*                                   when '' then <fs_param>-tabname
-*                                   else |{ <fs_param>-tabname }-{ <fs_param>-fieldname }|
-*                                      )  .
-*      ls_params-exid = <fs_param>-exid .
-*      if <fs_param>-param_class = 'T'.
-*        create data <fs_param>-val_data like table of  <fs_param>-ref_object.
-*      else.
-*        create data <fs_param>-val_data like  <fs_param>-ref_object.
-*      endif.
-*      append ls_params to t_params.
-*      clear ls_params.
+  endmethod.
 
-*  endloop.
+
+  method save_param.
+    get run time field v_end.
+    s_param_h-e_datum = sy-datum.
+    s_param_h-e_uzeit = sy-uzeit.
+    s_param_h-tu_time = v_end - v_begin.
+
+    t_param_i = value #( ( uuid = s_param_h-uuid
+                                      fname = s_param_h-fname
+                                      action = |in|
+                                      param = me->v_in_param_json  )
+                                      ( uuid = s_param_h-uuid
+                                      fname = s_param_h-fname
+                                      action = |out|
+                                      param = me->v_out_param_json  ) ).
+    modify ztba_if_param_h from s_param_h.
+    modify ztba_if_param_i from table t_param_i.
+    commit work.
 
   endmethod.
-endclass.
+ENDCLASS.

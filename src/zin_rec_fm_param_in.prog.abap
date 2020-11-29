@@ -28,4 +28,4 @@
      endif.
    endloop.
 
-   lcl_record_param->convert_to_json( ).
+   lcl_record_param->convert_in_param_to_json( ).

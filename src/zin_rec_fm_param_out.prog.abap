@@ -6,6 +6,5 @@
 
 
 
-   loop at lcl_record_param->t_params assigning <fs_params>.
-
-   endloop.
+lcl_record_param->convert_out_param_to_json( ).
+lcl_record_param->save_param( ).
