@@ -1,4 +1,4 @@
-class zcl_ext_if_rec_para definition
+class zcl_ba_ext_if_rec_para definition
   public
   final
   create public .
@@ -42,7 +42,7 @@ endclass.
 
 
 
-class zcl_ext_if_rec_para implementation.
+class zcl_ba_ext_if_rec_para implementation.
 
 
   method constructor.

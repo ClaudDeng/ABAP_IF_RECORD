@@ -3,7 +3,7 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>ZCX_EXT_SYS_IF</CLSNAME>
+    <CLSNAME>ZCX_BA_EXT_SYS_IF</CLSNAME>
     <LANGU>E</LANGU>
     <DESCRIPT>exception class of external system</DESCRIPT>
     <CATEGORY>40</CATEGORY>
@@ -35,7 +35,7 @@
    </SOTR>
    <DESCRIPTIONS>
     <SEOCOMPOTX>
-     <CLSNAME>ZCX_EXT_SYS_IF</CLSNAME>
+     <CLSNAME>ZCX_BA_EXT_SYS_IF</CLSNAME>
      <CMPNAME>CONSTRUCTOR</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>CONSTRUCTOR</DESCRIPT>

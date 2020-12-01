@@ -1,5 +1,5 @@
 "! <p class="shorttext synchronized" lang="en">external system interface execute record</p>
-class zcl_ext_if_rec_exe definition
+class zcl_ba_ext_if_rec_exe definition
   public
   final
   create public .
@@ -28,7 +28,7 @@ class zcl_ext_if_rec_exe definition
         value(iv_fname)      type rs38l_fnam
         value(iv_unique)     type char1 default 'X'
       raising
-        zcx_ext_sys_if .
+        zcx_ba_ext_sys_if .
     methods get_external_id_status
       returning
         value(rv_subrc) type zesubrc .
@@ -50,7 +50,7 @@ class zcl_ext_if_rec_exe definition
         iv_message  type bapi_msg
         iv_awkey    type awkey optional
       raising
-        zcx_ext_sys_if .
+        zcx_ba_ext_sys_if .
   protected section.
   private section.
     "! <p class="shorttext synchronized">external system note</p>
@@ -69,7 +69,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_EXT_IF_REC_EXE IMPLEMENTATION.
+CLASS ZCL_BA_EXT_IF_REC_EXE IMPLEMENTATION.
 
 
   method add_step.
@@ -101,9 +101,9 @@ CLASS ZCL_EXT_IF_REC_EXE IMPLEMENTATION.
     clear ls_record_i.
     "需要再次处理，则抛出异常，如果不再次处理，则直接记录错误。
     if lv_subrc = c_error_reprocess.
-      raise exception type zcx_ext_sys_if
+      raise exception type zcx_ba_ext_sys_if
         exporting
-          textid     = zcx_ext_sys_if=>error
+          textid     = zcx_ba_ext_sys_if=>error
           error_info = |{ iv_type }_单据{ v_external_note }执行{ iv_step_txt }失败。{ iv_message }|.
     endif.
 
@@ -119,14 +119,14 @@ CLASS ZCL_EXT_IF_REC_EXE IMPLEMENTATION.
     data(rv_subrc) = me->get_external_id_status( ).
     case rv_subrc.
       when c_ok or c_error. "已处理完成
-        raise exception type zcx_ext_sys_if
+        raise exception type zcx_ba_ext_sys_if
           exporting
-            textid     = zcx_ext_sys_if=>error
+            textid     = zcx_ba_ext_sys_if=>error
             error_info = |单据{ iv_ext_note }已经处理完成。上次处理结果：{ s_record_h-zmessage }|.
       when c_running. "正在处理
-        raise exception type zcx_ext_sys_if
+        raise exception type zcx_ba_ext_sys_if
           exporting
-            textid     = zcx_ext_sys_if=>error
+            textid     = zcx_ba_ext_sys_if=>error
             error_info = |单据{ iv_ext_note }正在处理。处理时间：{ s_record_h-datum date = iso  }_{ s_record_h-uzeit time = iso }|.
       when c_error_reprocess. "再次处理
       when ''. "首次处理
