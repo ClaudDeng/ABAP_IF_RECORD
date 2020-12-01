@@ -178,6 +178,7 @@ CLASS ZCL_REP_EXT_IF_REC_DISPLAY IMPLEMENTATION.
   method zif_ba_alv_event~handle_hotspot_click.
 
     data: lcl_alv type ref to cl_gui_alv_grid.
+"类也可以用CASE.
     lcl_alv ?= sender.
     case sender.
       when o_top_display->o_alv.
