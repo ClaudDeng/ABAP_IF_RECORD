@@ -38,11 +38,11 @@ class zcl_ext_if_rec_para definition
   private section.
     methods get_function_param.
     methods convert_to_json.
-ENDCLASS.
+endclass.
 
 
 
-CLASS ZCL_EXT_IF_REC_PARA IMPLEMENTATION.
+class zcl_ext_if_rec_para implementation.
 
 
   method constructor.
@@ -146,10 +146,11 @@ CLASS ZCL_EXT_IF_REC_PARA IMPLEMENTATION.
           field-symbols:<fs_table> type any table.
           assign <fs_param>-val_data->* to <fs_table>.
           <fs_param>-val_json =  zcl_mdp_json_node=>create_array_node( ).
-          lcl_object_node = zcl_mdp_json_node=>create_object_node( ).
+
           lo_table ?= lo_type.
 
           loop at <fs_table> assigning <fs_struct>.
+            lcl_object_node = zcl_mdp_json_node=>create_object_node( ).
             lo_struct ?= cl_abap_datadescr=>describe_by_data( p_data = <fs_struct> ).
             loop at lo_struct->components assigning <fs_comp>.
               unassign <fs_fld>.
@@ -160,7 +161,7 @@ CLASS ZCL_EXT_IF_REC_PARA IMPLEMENTATION.
               else.
                 lcl_ele_node =  zcl_mdp_json_node=>create_string_node(  ).
               endif.
-              lcl_ele_node->value = <fs_fld>.
+              lcl_ele_node->string_set_value( value = conv string( <fs_fld> ) ).
               lcl_object_node->object_add_child_node(
                      child_key   = conv string( <fs_comp>-name )
                    child_node  = lcl_ele_node      ).
@@ -241,4 +242,4 @@ CLASS ZCL_EXT_IF_REC_PARA IMPLEMENTATION.
     commit work.
 
   endmethod.
-ENDCLASS.
+endclass.
