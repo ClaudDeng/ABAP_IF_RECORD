@@ -65,11 +65,11 @@ class zcl_ext_if_rec_exe definition
     data t_record_i type table of ztba_if_record_i.
 
 
-endclass.
+ENDCLASS.
 
 
 
-class zcl_ext_if_rec_exe implementation.
+CLASS ZCL_EXT_IF_REC_EXE IMPLEMENTATION.
 
 
   method add_step.
@@ -138,7 +138,6 @@ class zcl_ext_if_rec_exe implementation.
               uzeit = sy-uzeit
               to shared buffer indx(a1) client sy-mandt id v_memory_id.
     s_record_h-zsubrc = c_running.
-
   endmethod.
 
 
@@ -216,4 +215,4 @@ class zcl_ext_if_rec_exe implementation.
     endif.
 
   endmethod.
-endclass.
+ENDCLASS.
