@@ -3,7 +3,7 @@
 *&---------------------------------------------------------------------*
 *&
 *&---------------------------------------------------------------------*
-report zrba_exit_if_rec_display.
+report zrba_ext_if_rec_display.
 tables: rs38l,tfdir.
 data: gt_param_h type table of ztba_if_param_h,
       gt_param_i type table of ztba_if_param_i.

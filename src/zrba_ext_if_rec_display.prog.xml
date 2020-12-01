@@ -3,7 +3,7 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <PROGDIR>
-    <NAME>ZRBA_EXIT_IF_REC_DISPLAY</NAME>
+    <NAME>ZRBA_EXT_IF_REC_DISPLAY</NAME>
     <SUBC>1</SUBC>
     <RLOAD>E</RLOAD>
     <FIXPT>X</FIXPT>
@@ -12,7 +12,7 @@
    <DYNPROS>
     <item>
      <HEADER>
-      <PROGRAM>ZRBA_EXIT_IF_REC_DISPLAY</PROGRAM>
+      <PROGRAM>ZRBA_EXT_IF_REC_DISPLAY</PROGRAM>
       <SCREEN>9000</SCREEN>
       <LANGUAGE>E</LANGUAGE>
       <DESCRIPT>Display</DESCRIPT>
