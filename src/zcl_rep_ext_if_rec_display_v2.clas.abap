@@ -17,7 +17,9 @@ class zcl_rep_ext_if_rec_display_v2 definition
           o_params_i_display_attr type ref to zcl_ba_alv_display_attr,
           o_top_display           type ref to zcl_ba_alv_display,
           o_left_container        type ref to cl_gui_docking_container,
-          o_right_container       type ref to cl_gui_container.
+          o_right_container       type ref to cl_gui_container,
+          o_left_html_viewer      type ref to cl_gui_html_viewer,
+          o_right_html_viewer     type ref to cl_gui_html_viewer.
     interfaces zif_ba_alv_event .
 
     aliases t_f4_field
@@ -54,19 +56,12 @@ class zcl_rep_ext_if_rec_display_v2 definition
         ir_uzeit type ty_r_uzeit      .
     methods display_json
       importing
-        io_container type ref to cl_gui_container
-        iv_content   type string.
+        io_html_viewer type ref to cl_gui_html_viewer
+        iv_content     type string.
 
   protected section.
   private section.
     methods set_display_attr.
-    methods convert_string_to_table
-      importing
-        i_string         type string
-        i_tabline_length type i
-        i_unicode        type c optional
-      exporting
-        et_table         type any table.
 
 endclass.
 
@@ -77,14 +72,7 @@ class zcl_rep_ext_if_rec_display_v2 implementation.
 
   method constructor.
 
-
   endmethod.
-
-
-  method convert_string_to_table.
-
-  endmethod.
-
 
   method display_json.
     data:lv_convert  type string,
@@ -108,19 +96,13 @@ class zcl_rep_ext_if_rec_display_v2 implementation.
     endtry.
     lv_convert = cl_abap_codepage=>convert_from( lv_html ).
 
-
-
-
     call function 'SCMS_STRING_TO_FTEXT'
       exporting
         text      = lv_convert
       tables
         ftext_tab = lt_data.
 
-    data : lcl_html_viewer type ref to cl_gui_html_viewer.
-
-    lcl_html_viewer = new cl_gui_html_viewer(  io_container ).
-    lcl_html_viewer->load_data(
+    io_html_viewer->load_data(
           exporting
             type                   = 'text'           " Type of a MIME Object
             subtype                = 'html'           " Subtype of a MIME Object
@@ -132,7 +114,7 @@ class zcl_rep_ext_if_rec_display_v2 implementation.
     ).
 
 * 显示HTML
-    call method lcl_html_viewer->show_url
+    call method io_html_viewer->show_url
       exporting
         url                    = lv_url
       exceptions
@@ -144,7 +126,7 @@ class zcl_rep_ext_if_rec_display_v2 implementation.
     if sy-subrc <> 0.
 
     endif.
-
+    io_html_viewer->do_refresh(  ).
 
   endmethod.
 
@@ -249,15 +231,20 @@ class zcl_rep_ext_if_rec_display_v2 implementation.
            .
         lv_in_json = t_params_i[ action = 'in' ]-param.
         lv_out_json = t_params_i[ action = 'out' ]-param.
-
+        if o_left_html_viewer is initial.
+          o_left_html_viewer = new cl_gui_html_viewer( o_left_container ).
+        endif.
+        if o_right_html_viewer is initial.
+          o_right_html_viewer = new cl_gui_html_viewer( o_right_container ).
+        endif.
         me->display_json(
           exporting
-            io_container = o_left_container
+            io_html_viewer = o_left_html_viewer
             iv_content   = lv_in_json
         ).
         me->display_json(
             exporting
-              io_container = o_right_container
+              io_html_viewer = o_right_html_viewer
               iv_content   = lv_out_json
           ).
     endcase.
